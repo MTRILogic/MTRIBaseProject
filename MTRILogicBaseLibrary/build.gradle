@@ -5,15 +5,16 @@ plugins {
 
 android {
     namespace 'com.mtrilogic.mtrilogicbaselibrary'
-    compileSdk 34
+    compileSdk 33
 
     defaultConfig {
-        aarMetadata {
+        /*aarMetadata {
             minCompileSdk = 21
-        }
+        }*/
 
         minSdk 21
-        targetSdk 34
+        //noinspection OldTargetApi
+        targetSdk 33
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
