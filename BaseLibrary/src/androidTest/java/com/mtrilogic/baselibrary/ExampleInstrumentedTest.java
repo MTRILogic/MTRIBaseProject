@@ -1,4 +1,4 @@
-package com.mtrilogic.mtrilogicbaselibrary;
+package com.mtrilogic.baselibrary;
 
 import android.content.Context;
 

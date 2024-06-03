@@ -12,9 +12,12 @@ dependencyResolutionManagement {
         mavenLocal()
         google()
         mavenCentral()
+        maven {
+            url = uri('file:///D:/MTRI/LocalRepository')
+        }
     }
 }
 
 rootProject.name = "MTRILogicBaseLibraryProject"
 include ':app'
-include ':MTRILogicBaseLibrary'
+include ':BaseLibrary'

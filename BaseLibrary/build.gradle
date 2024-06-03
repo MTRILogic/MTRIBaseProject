@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace 'com.mtrilogic.mtrilogicbaselibrary'
+    namespace 'com.mtrilogic.baselibrary'
     compileSdk 33
 
     defaultConfig {
@@ -43,7 +43,7 @@ publishing {
     publications {
         release(MavenPublication) {
             groupId = 'com.mtrilogic'
-            artifactId = 'modelablelibraryproject'
+            artifactId = 'baselibrary'
             version = '0.0.0'
 
             afterEvaluate {
@@ -53,8 +53,8 @@ publishing {
     }
     repositories {
         maven {
-            name = 'myLocalRepositorie'
-            url = uri("file:///D:/MTRI/Android/Repositories")
+            name = 'MTRI-LocalRepository'
+            url = uri('file:///D:/MTRI/LocalRepository')
         }
     }
 }
