@@ -10,7 +10,7 @@ import com.mtrilogic.logic.classes.Listable;
 public abstract class ListablePaginable<M extends Modelable> extends Paginable {
 
     /*==============================================================================================
-    CONSTACTS
+    CONSTANTS
     ==============================================================================================*/
 
     public static final String LISTABLE = "listable";
@@ -31,7 +31,7 @@ public abstract class ListablePaginable<M extends Modelable> extends Paginable {
         listable = new Listable<>();
     }
 
-    // Solo para versione igual o posterior a Tiramisu (33)
+    // Solo para versiones de Android igual o posterior a Tiramisu (33)
     protected ListablePaginable(long itemId, int viewType, CharSequence pageTitle, String tagName, Class<M> clazz) {
         this(itemId, viewType, pageTitle, tagName);
         this.clazz = clazz;

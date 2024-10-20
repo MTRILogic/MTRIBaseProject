@@ -112,7 +112,7 @@ public abstract class Fragmentable<P extends Paginable> extends Fragment {
         listener.getFragmentableAdapter().notifyDataSetChanged();
     }
 
-    protected final void makeToast(String line){
-        listener.onMakeToast(line);
+    protected final void makeToast(String line, boolean background){
+        listener.onMakeToast(line, background);
     }
 }
