@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 public interface InflatableAdapterListener extends OnMakeToastListener {
 
-    @NotNull Inflatable<? extends Modelable> getInflatable(int viewType);
+    Inflatable<? extends Modelable> getInflatable(int viewType);
 
     @NotNull Listable<Modelable> getModelableListable();
 }

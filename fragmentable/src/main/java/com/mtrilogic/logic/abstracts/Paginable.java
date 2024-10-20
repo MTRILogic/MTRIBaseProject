@@ -70,7 +70,7 @@ public abstract class Paginable extends Modelable {
     protected void onRestoreFromData(@NonNull Bundle data) {
         super.onRestoreFromData(data);
         pageTitle = data.getCharSequence(PAGE_TITLE);
-        tagName = data.getString(PAGE_TITLE);
+        tagName = data.getString(TAG_NAME);
     }
 
     @Override

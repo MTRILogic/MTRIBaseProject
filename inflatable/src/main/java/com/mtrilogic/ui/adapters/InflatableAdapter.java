@@ -62,10 +62,14 @@ public final class InflatableAdapter extends BaseAdapter {
         } else {
             int viewType = modelable.getViewType();
             bindable = listener.getInflatable(viewType);
-            itemView = bindable.getItemView(inflater, parent);
-            itemView.setTag(bindable);
         }
-        bindable.bindModelable(modelable, position);
+        if (bindable != null) {
+            if (itemView == null) {
+                itemView = bindable.getItemView(inflater, parent);
+                itemView.setTag(bindable);
+            }
+            bindable.bindModelable(modelable, position);
+        }
         return itemView;
     }
 

@@ -51,6 +51,7 @@ public abstract class Inflatable<M extends Modelable> implements Bindable {
     OVERRIDE PUBLIC METHODS
     ==============================================================================================*/
 
+    @NotNull
     @Override
     public View getItemView(@NotNull LayoutInflater inflater, @NotNull ViewGroup parent) {
         int layoutResource = getLayoutResource();
@@ -72,7 +73,15 @@ public abstract class Inflatable<M extends Modelable> implements Bindable {
 
     protected final void autoDelete() {
         if (listener.getModelableListable().getList().remove(model)) {
-            listener.getInflatableAdapter().notifyDataSetChanged();
+            notifyChange();
         }
+    }
+
+    protected final void notifyChange() {
+        listener.getInflatableAdapter().notifyDataSetChanged();
+    }
+
+    protected final void makeToast(String line, boolean background) {
+        listener.onMakeToast(line, background);
     }
 }

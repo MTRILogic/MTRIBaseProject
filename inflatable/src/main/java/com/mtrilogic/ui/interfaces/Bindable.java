@@ -6,9 +6,11 @@ import android.view.ViewGroup;
 
 import com.mtrilogic.logic.abstracts.Modelable;
 
+import org.jetbrains.annotations.NotNull;
+
 public interface Bindable {
 
-    View getItemView(LayoutInflater inflater, ViewGroup parent);
+    @NotNull View getItemView(@NotNull LayoutInflater inflater, @NotNull ViewGroup parent);
 
-    void bindModelable(Modelable modelable, int position);
+    void bindModelable(@NotNull Modelable modelable, int position);
 }
