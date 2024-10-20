@@ -12,9 +12,9 @@ dependencyResolutionManagement {
         mavenLocal()
         google()
         mavenCentral()
-        maven {
+        /*/maven {
             url = uri('file:///D:/MTRI/LocalRepository')
-        }
+        }*/
     }
 }
 
