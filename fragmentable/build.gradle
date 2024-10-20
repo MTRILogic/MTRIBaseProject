@@ -61,7 +61,7 @@ publishing {
 }
 
 dependencies {
-    implementation project(':modelable')
+    api project(':modelable')
     //implementation 'com.mtrilogic:modelable:0.0.0'
 
     implementation 'androidx.appcompat:appcompat:1.7.0'
