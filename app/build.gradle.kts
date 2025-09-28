@@ -37,18 +37,18 @@ android {
 }
 
 dependencies {
-    /*implementation(project(":fragmentable"))
+    implementation(project(":fragmentable"))
     implementation(project(":inflatable"))
     implementation(project(":modelable"))
-    implementation(project(":recyclable"))*/
+    implementation(project(":recyclable"))
 
-    // 🔹 Usando repositorio local:
-    implementation("com.mtrilogic:modelable:0.0.0")
+    // Usando repositorio local:
+    /*implementation("com.mtrilogic:modelable:0.0.0")
     implementation("com.mtrilogic:fragmentable:0.0.0")
     implementation("com.mtrilogic:inflatable:0.0.0")
-    implementation("com.mtrilogic:recyclable:0.0.0")
+    implementation("com.mtrilogic:recyclable:0.0.0")*/
 
-    // 🔹 Alternativamente, usando JitPack (comentado si usas local)
+    // Alternativamente, usando JitPack (comentado si usas local)
     // implementation("com.github.TU_USUARIO:MTRILogicLibraryProject:0.0.1")
 
     implementation("androidx.appcompat:appcompat:1.7.1")
