@@ -12,12 +12,6 @@ dependencyResolutionManagement {
         mavenLocal()
         google()
         mavenCentral()
-        /*maven {
-            url "https://jitpack.io"
-        }*/
-        /*/maven {
-            url = uri('file:///D:/MTRI/LocalRepository')
-        }*/
     }
 }
 
@@ -26,3 +20,4 @@ include ':app'
 include ':modelable'
 include ':inflatable'
 include ':fragmentable'
+include ':recyclable'

@@ -63,18 +63,18 @@ public abstract class Paginable extends Modelable {
     }
 
     /*==============================================================================================
-    OVERRIDE PROTECTED METHODS
+    OVERRIDE PUBLIC METHODS
     ==============================================================================================*/
 
     @Override
-    protected void onRestoreFromData(@NonNull Bundle data) {
+    public void onRestoreFromData(@NonNull Bundle data) {
         super.onRestoreFromData(data);
         pageTitle = data.getCharSequence(PAGE_TITLE);
         tagName = data.getString(TAG_NAME);
     }
 
     @Override
-    protected void onSaveToData(@NonNull Bundle data) {
+    public void onSaveToData(@NonNull Bundle data) {
         super.onSaveToData(data);
         data.putCharSequence(PAGE_TITLE, pageTitle);
         data.putString(TAG_NAME, tagName);

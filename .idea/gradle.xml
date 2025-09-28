@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/fragmentable" />
             <option value="$PROJECT_DIR$/inflatable" />
             <option value="$PROJECT_DIR$/modelable" />
+            <option value="$PROJECT_DIR$/recyclable" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

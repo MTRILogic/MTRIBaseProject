@@ -4,28 +4,17 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
 import com.mtrilogic.logic.abstracts.Paginable;
-import com.mtrilogic.ui.listeners.FragmentableListener;
+import com.mtrilogic.logic.classes.Listable;
+import com.mtrilogic.ui.adapters.FragmentableAdapter;
 
 @SuppressWarnings("unused")
-public abstract class Fragmentable<P extends Paginable> extends Fragment {
+public abstract class Fragmentable<P extends Paginable> extends BaseFragment<P> {
+    protected static final String POSITION = "position";
 
-    /*==============================================================================================
-    CONSTANTS
-    ==============================================================================================*/
-
-    private static final String PAGE = "page", POSITION = "position";
-
-    /*==============================================================================================
-    VARIABLES
-    ==============================================================================================*/
-
-    protected FragmentableListener listener;
     protected int position;
-    protected P page;
 
     /*==============================================================================================
     PUBLIC CONSTRUCTORS
@@ -34,85 +23,71 @@ public abstract class Fragmentable<P extends Paginable> extends Fragment {
     public Fragmentable() {}
 
     /*==============================================================================================
-    OVERRIDE PUBLIC METHODS
+    PUBLIC OVERRIDE METHODS
     ==============================================================================================*/
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if (context instanceof FragmentableListener){
-            this.listener = (FragmentableListener) context;
-        }else {
-            throw new RuntimeException("BaseFragment > No FragmentableListener attached");
+        if (context instanceof Listener) {
+            listener = (Listener) context;
+        } else {
+            throw new RuntimeException("<Fragmentable> No Listener attached");
         }
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Bundle args = getArguments();
-        if (args != null){
-            position = args.getInt(POSITION);
-            page = args.getParcelable(PAGE);
-            if (page != null){
-                String tagName = page.getTagName();
-                String tag = getTag();
-                if (tag != null && !tag.equals(tagName)){
-                    page.setTagName(tag);
-                }
-            }
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        listener = null;
-        super.onDetach();
     }
 
     /*==============================================================================================
     PUBLIC METHODS
     ==============================================================================================*/
 
-    public final void bindPaginable(@NonNull Paginable paginable, int position) {
+    public void bindPaginable(@NonNull Paginable paginable, int position) {
         Bundle args = new Bundle();
-        args.putParcelable(PAGE, paginable);
+        args.putParcelable(PAGINABLE, paginable);
         args.putInt(POSITION, position);
         setArguments(args);
     }
 
-    public final void bindPosition(int position) {
-        this.position = position;
+    public void bindPosition(int position) {
         Bundle args = getArguments();
         if (args != null) {
             args.putInt(POSITION, position);
+            onUpdatePosition(position);
         }
     }
 
-    @NonNull
-    public final Paginable getPaginable() {
-        return page;
-    }
-
-    public final int getPosition() {
+    public int getPosition() {
         return position;
     }
 
     /*==============================================================================================
-    PROTECTED FINAL METHODS
+    PROTECTED METHODS
     ==============================================================================================*/
 
-    protected final void autoDelete(){
-        if (listener.getPaginableListable().getList().remove(page)) {
+    protected void autoDelete(){
+        if (getListener().getPaginableListable().getList().remove(page)) {
             notifyChanged();
         }
     }
 
-    protected final void notifyChanged(){
-        listener.getFragmentableAdapter().notifyDataSetChanged();
+    protected void notifyChanged(){
+        getListener().getFragmentableAdapter().notifyDataSetChanged();
     }
 
-    protected final void makeToast(String line, boolean background){
-        listener.onMakeToast(line, background);
+    protected void onUpdatePosition(int position) {
+        this.position = position;
+    }
+
+    protected Listener getListener() {
+        return (Listener) listener;
+    }
+
+    /*==============================================================================================
+    PUBLIC LISTENER
+    ==============================================================================================*/
+
+    public interface Listener extends BaseFragment.Listener {
+        @NonNull FragmentableAdapter getFragmentableAdapter();
+        @NonNull Listable<Paginable> getPaginableListable();
+        @NonNull ViewPager getViewPager();
     }
 }

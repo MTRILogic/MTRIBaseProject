@@ -5,30 +5,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.mtrilogic.ui.abstracts.Inflatable;
-import com.mtrilogic.logic.abstracts.Modelable;
-import com.mtrilogic.ui.interfaces.Bindable;
-import com.mtrilogic.ui.listeners.InflatableAdapterListener;
+import androidx.annotation.NonNull;
 
-import org.jetbrains.annotations.NotNull;
+import com.mtrilogic.logic.abstracts.Modelable;
+import com.mtrilogic.ui.abstracts.Bindable;
+import com.mtrilogic.ui.abstracts.Inflatable;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public final class InflatableAdapter extends BaseAdapter {
-
-    /*==============================================================================================
-    PRIVATE INMUTABLES
-    ==============================================================================================*/
-
-    private final InflatableAdapterListener listener;
     private final LayoutInflater inflater;
+    private final Listener listener;
     private final int typeCount;
 
     /*==============================================================================================
     PUBLIC CONSTRUCTORS
     ==============================================================================================*/
 
-    public InflatableAdapter(@NotNull LayoutInflater inflater, int typeCount, @NotNull InflatableAdapterListener listener) {
+    public InflatableAdapter(@NonNull LayoutInflater inflater, int typeCount, @NonNull Listener listener) {
         this.typeCount = typeCount > 0 ? typeCount : 1;
         this.inflater = inflater;
         this.listener = listener;
@@ -43,6 +38,7 @@ public final class InflatableAdapter extends BaseAdapter {
         return getModelableList().size();
     }
 
+    @NonNull
     @Override
     public Modelable getItem(int position) {
         return getModelable(position);
@@ -53,26 +49,24 @@ public final class InflatableAdapter extends BaseAdapter {
         return getModelable(position).getItemId();
     }
 
+    @NonNull
     @Override
     public View getView(int position, View itemView, ViewGroup parent) {
         Modelable modelable = getModelable(position);
-        Bindable bindable;
+        Inflatable<? extends Modelable> inflatable;
         if (itemView != null) {
-            bindable = (Inflatable<? extends Modelable>) itemView.getTag();
+            inflatable = (Inflatable<? extends Modelable>) itemView.getTag();
         } else {
             int viewType = modelable.getViewType();
-            bindable = listener.getInflatable(viewType);
+            inflatable = listener.getInflatable(viewType);
+            itemView = inflatable.getItemView(inflater, parent);
+            itemView.setTag(inflatable);
         }
-        if (bindable != null) {
-            if (itemView == null) {
-                itemView = bindable.getItemView(inflater, parent);
-                itemView.setTag(bindable);
-            }
-            bindable.bindModelable(modelable, position);
-        }
+        inflatable.bindModelable(modelable, position);
         return itemView;
     }
 
+    @NonNull
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
         return getView(position, convertView, parent);
@@ -107,11 +101,21 @@ public final class InflatableAdapter extends BaseAdapter {
     PRIVATE METHODS
     ==============================================================================================*/
 
+    @NonNull
     private List<Modelable> getModelableList() {
-        return listener.getModelableListable().getList();
+        return listener.getModelableList();
     }
 
+    @NonNull
     private Modelable getModelable(int position) {
         return getModelableList().get(position);
+    }
+
+    /*==============================================================================================
+    PUBLIC INTERFACE
+    ==============================================================================================*/
+
+    public interface Listener extends Bindable.AdapterListener {
+        @NonNull Inflatable<? extends Modelable> getInflatable(int viewType);
     }
 }

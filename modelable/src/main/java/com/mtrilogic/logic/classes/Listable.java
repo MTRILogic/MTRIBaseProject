@@ -3,9 +3,9 @@ package com.mtrilogic.logic.classes;
 import android.os.Build;
 import android.os.Bundle;
 
-import com.mtrilogic.logic.abstracts.Modelable;
+import androidx.annotation.NonNull;
 
-import org.jetbrains.annotations.NotNull;
+import com.mtrilogic.logic.abstracts.Modelable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,38 +35,33 @@ public class Listable<M extends Modelable> {
     PUBLIC CONSTRUCTORS
     ==============================================================================================*/
 
-    public Listable(@NotNull Bundle data, @NotNull String key) {
-        List<M> list = data.getParcelableArrayList(LIST + key);
-        setListable(list, data, key);
+    public Listable(@NonNull Bundle data, @NonNull String key, @NonNull Class<M> clazz) {
+        restoreFromData(data, key, clazz);
     }
 
-    // Just to use with Tiramisu version
-    public Listable(@NotNull Bundle data, @NotNull String key, @NotNull Class<M> clazz) {
+    public Listable() {}
+
+    /*==============================================================================================
+    PUBLIC METHODS
+    ==============================================================================================*/
+
+    public void restoreFromData(@NonNull Bundle data, @NonNull String key, @NonNull Class<M> clazz) {
         List<M> list;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             list = data.getParcelableArrayList(LIST + key, clazz);
         } else {
             list = data.getParcelableArrayList(LIST + key);
         }
-        setListable(list, data, key);
-    }
-
-    public Listable() {}
-
-    /*==============================================================================================
-    PRIVATE METHODS
-    ==============================================================================================*/
-
-    private void  setListable(List<M> list, @NotNull Bundle data, @NotNull String key) {
         if (list != null) {
             idx = data.getLong(IDX + key);
             this.list.addAll(list);
         }
     }
 
-    /*==============================================================================================
-    PUBLIC METHODS
-    ==============================================================================================*/
+    public void saveToData(@NonNull Bundle data, @NonNull String key) {
+        data.putParcelableArrayList(LIST + key, new ArrayList<>(list));
+        data.putLong(IDX + key, idx);
+    }
 
     public List<M> getList() {
         return list;
@@ -83,10 +78,5 @@ public class Listable<M extends Modelable> {
     public void clear() {
         list.clear();
         idx = 0;
-    }
-
-    public void saveToData(@NotNull Bundle data, @NotNull String key) {
-        data.putParcelableArrayList(LIST + key, (ArrayList<M>) list);
-        data.putLong(IDX + key, idx);
     }
 }

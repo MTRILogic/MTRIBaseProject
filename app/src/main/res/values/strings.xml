@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">ModelableLibraryProject</string>
 
-    <string name="load">Load data</string>
+    <string name="inflatable">Inflatable</string>
+    <string name="recyclable">Recyclable</string>
 
-    <string name="item">%1$s: %2$s</string>
+    <string name="sampleTitle">Title Sample</string>
+    <string name="sampleContent">Content Sample</string>
+    <string name="sampleItemsDEscription">Items de ejemplo</string>
 </resources>

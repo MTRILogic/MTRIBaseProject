@@ -7,10 +7,16 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnLoad"
+    <Button
+        android:id="@+id/btnInflatable"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/load"/>
+        android:text="@string/inflatable"/>
+
+    <Button
+        android:id="@+id/btnRecyclable"
+        android:text="@string/recyclable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>
