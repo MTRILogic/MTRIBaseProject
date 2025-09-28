@@ -1,87 +1,51 @@
 package com.mtrilogic.ui.abstracts;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.widget.AbsListView;
+
+import androidx.annotation.NonNull;
 
 import com.mtrilogic.logic.abstracts.Modelable;
-import com.mtrilogic.ui.interfaces.Bindable;
-import com.mtrilogic.ui.listeners.InflatableListener;
-
-import org.jetbrains.annotations.NotNull;
+import com.mtrilogic.ui.adapters.InflatableAdapter;
 
 @SuppressWarnings("unused")
-public abstract class Inflatable<M extends Modelable> implements Bindable {
-
-    /*==============================================================================================
-    PROTECTED INMUTABLES
-    ==============================================================================================*/
-
-    protected final InflatableListener listener;
-    protected final Class<M> clazz;
-
-    /*==============================================================================================
-    VARIABLES
-    ==============================================================================================*/
-
-    protected View itemView;
-    protected int position;
-    protected M model;
-
-    /*==============================================================================================
-    PROTECTED ABSTRACT METHODS
-    ==============================================================================================*/
-
-    protected abstract int getLayoutResource();
-
-    protected abstract void onBindItemView();
-
-    protected abstract void onBindModel();
+public abstract class Inflatable<M extends Modelable> extends Bindable<M> {
 
     /*==============================================================================================
     PUBLIC CONSTRUCTORS
     ==============================================================================================*/
 
-    public Inflatable(@NotNull Class<M> clazz, @NotNull InflatableListener listener) {
-        this.listener = listener;
-        this.clazz = clazz;
-    }
-
-    /*==============================================================================================
-    OVERRIDE PUBLIC METHODS
-    ==============================================================================================*/
-
-    @NotNull
-    @Override
-    public View getItemView(@NotNull LayoutInflater inflater, @NotNull ViewGroup parent) {
-        int layoutResource = getLayoutResource();
-        itemView = inflater.inflate(layoutResource, parent, false);
-        onBindItemView();
-        return itemView;
-    }
-
-    @Override
-    public void bindModelable(@NotNull Modelable modelable, int position) {
-        model = clazz.cast(modelable);
-        this.position = position;
-        onBindModel();
+    public Inflatable(@NonNull Class<M> clazz, @NonNull Listener listener, ActionListener<M> actionListener) {
+        super(clazz, listener, actionListener);
     }
 
     /*==============================================================================================
     PROTECTED METHODS
     ==============================================================================================*/
 
-    protected final void autoDelete() {
-        if (listener.getModelableListable().getList().remove(model)) {
-            notifyChange();
+    protected void autoDelete() {
+        if (removeModel()) {
+            notifyAdapter();
         }
     }
 
-    protected final void notifyChange() {
-        listener.getInflatableAdapter().notifyDataSetChanged();
+    protected void notifyAdapter() {
+        getListener().getInflatableAdapter().notifyDataSetChanged();
     }
 
-    protected final void makeToast(String line, boolean background) {
-        listener.onMakeToast(line, background);
+    /*==============================================================================================
+    PRIVATE METHODS
+    ==============================================================================================*/
+
+    private Listener getListener() {
+        return (Listener) listener;
+    }
+
+    /*==============================================================================================
+    PUBLIC LISTENER
+    ==============================================================================================*/
+
+    public interface Listener extends Bindable.Listener {
+        @NonNull InflatableAdapter getInflatableAdapter();
+        @NonNull AbsListView getListView();
     }
 }

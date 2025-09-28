@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import com.mtrilogic.logic.classes.Listable;
 
 @SuppressWarnings("unused")
-public abstract class ListablePaginable<M extends Modelable> extends Paginable {
+public abstract class ModelableListablePage extends Paginable {
 
     /*==============================================================================================
     CONSTANTS
@@ -19,29 +19,21 @@ public abstract class ListablePaginable<M extends Modelable> extends Paginable {
     VARIABLES
     ==============================================================================================*/
 
-    private Listable<M> listable;
-    private Class<M> clazz;
+    private final Listable<Modelable> modelableListable = new Listable<>();
 
     /*==============================================================================================
     PUBLIC CONSTRUCTORS
     ==============================================================================================*/
 
-    public ListablePaginable(long itemId, int viewType, CharSequence pageTitle, String tagName) {
+    public ModelableListablePage(long itemId, int viewType, CharSequence pageTitle, String tagName) {
         super(itemId, viewType, pageTitle, tagName);
-        listable = new Listable<>();
-    }
-
-    // Solo para versiones de Android igual o posterior a Tiramisu (33)
-    protected ListablePaginable(long itemId, int viewType, CharSequence pageTitle, String tagName, Class<M> clazz) {
-        this(itemId, viewType, pageTitle, tagName);
-        this.clazz = clazz;
     }
 
     /*==============================================================================================
     PROTECTED CONSTRUCTORS
     ==============================================================================================*/
 
-    protected ListablePaginable(Bundle data) {
+    protected ModelableListablePage(Bundle data) {
         super(data);
     }
 
@@ -49,28 +41,23 @@ public abstract class ListablePaginable<M extends Modelable> extends Paginable {
     PUBLIC METHODS
     ==============================================================================================*/
 
-    public Listable<M> getListable() {
-        return listable;
+    public Listable<Modelable> getModelableListable() {
+        return modelableListable;
     }
 
     /*==============================================================================================
-    OVERRIDE PROTECTED METHODS
+    OVERRIDE PUBLIC METHODS
     ==============================================================================================*/
 
     @Override
-    protected void onRestoreFromData(@NonNull Bundle data) {
+    public void onRestoreFromData(@NonNull Bundle data) {
         super.onRestoreFromData(data);
-        if (clazz != null) {
-            // Solo para versiones de Android igual o posteriores a Tiramisu (33)
-            listable = new Listable<>(data, LISTABLE, clazz);
-        } else {
-            listable = new Listable<>(data, LISTABLE);
-        }
+        modelableListable.restoreFromData(data, LISTABLE, Modelable.class);
     }
 
     @Override
-    protected void onSaveToData(@NonNull Bundle data) {
+    public void onSaveToData(@NonNull Bundle data) {
         super.onSaveToData(data);
-        listable.saveToData(data, LISTABLE);
+        modelableListable.saveToData(data, LISTABLE);
     }
 }
